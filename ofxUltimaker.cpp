@@ -82,31 +82,18 @@ void ofxUltimaker::update(ofEventArgs &e) {
         if (str!="") {
 
             cout << "> " << str << endl;
+            
+            int temperaturePos = str.find("T:");
+            if (temperaturePos > -1)
+            {
+                temperature = ofToFloat(str.substr(temperaturePos+2));
+            }
 
             if (isOk(str)) {
-
-                if (str.size()>4) {
-                    if (str[3]=='T') {
-                        temperature = ofToFloat(ofSplitString(ofSplitString(str,":")[1],",")[0]);
-                    }
-                }
-
                 isBusy = false;
                 if (gcode.lines.size()>0 && currentLine<gcode.lines.size()) {
                     send(gcode.lines.at(currentLine));
                     currentLine++;
-                }
-            } else {
-
-                if (str[0]=='T') { //got temperature
-                    //cout << "got temp" << endl;
-                    //vector<string> items = ofSplitString(str," "); //ofxParseString(str,"T:%f E:%d W:%d");
-                    temperature = ofToFloat(ofSplitString(str,":")[1]);
-    //                string waitTimer = ofSplitString(items[2],":")[0];
-    //                if (waitTimer=="0") {
-    //                    isBusy=false;
-    //                    currentLine++;
-    //                }
                 }
             }
         }
